@@ -16,17 +16,16 @@ driver = webdriver.Chrome(options=chrome_options)
 url = "https://www.python.org/"
 
 driver.get(url)
-event_element = driver.find_element(
-    By.CLASS_NAME, "event-widget.last")
 
-event_time_tags = event_element.find_elements(By.TAG_NAME, "time")
+event_time_tags = driver.find_elements(
+    By.CSS_SELECTOR, value=".event-widget time")
 event_times = [e.text for e in event_time_tags]
-event_name_tags = event_element.find_elements(By.TAG_NAME, "a")
-event_names = [e.text for e in event_name_tags][1:]
+event_name_tags = driver.find_elements(
+    By.CSS_SELECTOR, value=".event-widget li a")
+event_names = [e.text for e in event_name_tags]
 
 events_dict = {}
 for i in range(min(len(event_times), len(event_names))):
     events_dict[i] = {"time": event_times[i], "name": event_names[i]}
 pprint(events_dict)
-
 driver.quit()
